@@ -325,8 +325,56 @@ export class UserInputUtil {
         } catch (error) {
             vscode.window.showErrorMessage(error.message);
         }
-
     }
+
+    public static async folderOrBrowse(placeHolder: string): Promise<string> {
+
+      const workspaceFolderOptions: vscode.WorkspaceFolder[] = UserInputUtil.getWorkspaceFolders();
+
+      const workspaceQuickPickItems: Array<IBlockchainQuickPickItem<{ name: string, uri: any }>> = [];
+      for (const item of workspaceFolderOptions) {
+
+        const data = {name: item.name, uri: item.uri};
+        workspaceQuickPickItems.push({label: data.name, data: data});
+
+      }
+      workspaceQuickPickItems.push({label: this.BROWSE_LABEL, data: {name: this.BROWSE_LABEL, uri: undefined}});
+
+      try {
+          const result: IBlockchainQuickPickItem<{ name: string, uri: any }> = await vscode.window.showQuickPick(workspaceQuickPickItems, { placeHolder });
+
+          if (!result) {
+              return;
+          }
+
+          if (result.data.name === this.BROWSE_LABEL) {
+              // Browse to get path
+              const usersHome = vscode.Uri.file(homeDir());
+
+              // see method comment for details of this workaround
+              // will need to add delay here when that is ready
+              const fileBrowser: vscode.Uri[] = await vscode.window.showOpenDialog({
+                  canSelectFiles: false,
+                  canSelectFolders: true,
+                  canSelectMany: false,
+                  openLabel: 'Select folder',
+                  defaultUri: usersHome
+              });
+
+              if (!fileBrowser) {
+                  return;
+              }
+
+              return fileBrowser[0].fsPath;
+
+          } else {
+            return result.data.uri.path;
+          }
+
+        } catch (error) {
+          vscode.window.showErrorMessage(error.message);
+      }
+  }
 
     public static async openUserSettings(connectionName: string): Promise<void> {
         let settingsPath: string;

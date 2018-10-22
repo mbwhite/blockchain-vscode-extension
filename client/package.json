@@ -33,7 +33,25 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onView:blockchainExplorer",
+        "onCommand:blockchainExplorer.addConnectionEntry",
+        "onCommand:blockchainExplorer.deleteConnectionEntry",
+        "onCommand:blockchainExplorer.addConnectionIdentityEntry",
+        "onCommand:blockchainExplorer.connectEntry",
+        "onCommand:blockchainExplorer.disconnectEntry",
+        "onCommand:blockchainExplorer.refreshEntry",
+        "onCommand:blockchain.createSmartContractProjectEntry",
+        "onCommand:blockchainExplorer.installSmartContractEntry",
+        "onCommand:blockchainExplorer.instantiateSmartContractEntry",
+        "onCommand:blockchainAPackageExplorer.refreshEntry",
+        "onCommand:blockchainAPackageExplorer.packageSmartContractProjectEntry",
+        "onCommand:blockchainAPackageExplorer.deleteSmartContractPackageEntry",
+        "onCommand:blockchainExplorer.startFabricRuntime",
+        "onCommand:blockchainExplorer.stopFabricRuntime",
+        "onCommand:blockchainExplorer.restartFabricRuntime",
+        "onCommand:blockchainExplorer.toggleFabricRuntimeDevMode",
+        "onCommand:blockchainExplorer.exportRuntimeConnectionProfile",
+        "onCommand:blockchainExplorer.editConnectionEntry"
     ],
     "actualActivationEvents": {
         "other": [
@@ -61,6 +79,7 @@
             "blockchainExplorer.restartFabricRuntime",
             "blockchainExplorer.teardownFabricRuntime",
             "blockchainExplorer.toggleFabricRuntimeDevMode",
+            "blockchainExplorer.exportRuntimeConnectionProfile",
             "blockchainExplorer.editConnectionEntry"
         ]
     },
@@ -223,7 +242,12 @@
                 "command": "blockchainExplorer.editConnectionEntry",
                 "title": "Edit Connection",
                 "category": "IBM Blockchain Platform"
-            }
+            },
+            {
+              "command": "blockchainExplorer.exportRuntimeConnectionProfile",
+              "title": "Export Connection Profile",
+              "category": "IBM Blockchain Platform"
+          }
         ],
         "menus": {
             "commandPalette": [
@@ -241,6 +265,9 @@
                 },
                 {
                     "command": "blockchainExplorer.toggleFabricRuntimeDevMode"
+                },
+                {
+                    "command": "blockchainExplorer.exportRuntimeConnectionProfile"
                 }
             ],
             "view/title": [
@@ -334,6 +361,10 @@
                 {
                     "command": "blockchainExplorer.editConnectionEntry",
                     "when": "view == blockchainExplorer && viewItem == blockchain-connection-item"
+                },
+                {
+                    "command": "blockchainExplorer.exportRuntimeConnectionProfile",
+                    "when": "view == blockchainExplorer && viewItem == blockchain-runtime-item-started"
                 }
             ]
         },
